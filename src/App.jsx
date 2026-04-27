@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "./lib/supabase";
 
 const FALLBACK_IMAGE =
-    "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1200&auto=format&fit=crop";
+    "/images/default.jpeg";
 
 function createId() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -275,7 +275,7 @@ function HeroSection({ memoriesCount, totalDays }) {
               />
 
               <motion.img
-                  src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=1200&auto=format&fit=crop"
+                  src="/images/album.jpeg"
                   alt="Couple memory"
                   className="relative h-[430px] w-full rounded-[2rem] object-cover shadow-2xl"
                   animate={{ scale: [1, 1.035, 1] }}
