@@ -229,7 +229,7 @@ function HeroSection({ memoriesCount, totalDays }) {
                 >
                   <Icon name="sparkles" size={16} />
                 </motion.span>
-                Anh thương em ❤️
+                Anh thương Em ❤️
               </motion.div>
 
               <motion.h1
@@ -319,7 +319,7 @@ function HeroSection({ memoriesCount, totalDays }) {
 
                   <div>
                     <p className="font-semibold">Anh thương Em ❤️</p>
-                    <p className="text-sm text-white/70">Mỗi khoảnh khắc đều có một câu chuyện riêng</p>
+                    <p className="text-sm text-white/70">Đây là tất cả những gì anh muốn lưu giữ lại, tất cả mọi thứ về em</p>
                   </div>
                 </div>
               </motion.div>
