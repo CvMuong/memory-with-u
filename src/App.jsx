@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "./lib/supabase";
 
+const FIRST_MEET_DATE = "2025-08-31";
 const FALLBACK_IMAGE =
     "/images/default.jpeg";
 
@@ -78,13 +79,25 @@ function getDaysFromMemoryDate(dateString) {
   return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
 }
 
-function formatMemoryDays(dateString) {
-  const days = getDaysFromMemoryDate(dateString);
+function getDaysSinceFirstMeet() {
+  const firstMeetDate = new Date(FIRST_MEET_DATE);
+  const today = new Date();
+
+  firstMeetDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diff = today.getTime() - firstMeetDate.getTime();
+
+  return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+}
+
+function formatMemoryDays() {
+  const days = getDaysSinceFirstMeet();
 
   if (days === 0) return "Hôm nay là ngày kỷ niệm";
   if (days === 1) return "Đã bên nhau 1 ngày";
 
-  return `Đã bên nhau ${days.toLocaleString("vi-VN")} ngày`;
+  return `Đã ${days.toLocaleString("vi-VN")} ngày kể từ lúc anh gặp Em`;
 }
 
 function Icon({ name, size = 20, className = "", fill = "none" }) {
