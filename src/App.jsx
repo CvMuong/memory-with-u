@@ -343,9 +343,6 @@ function FilmSection({ currentSlide, sortedMemories, activeSlide, setActiveSlide
           <div>
             <p className="mb-2 text-sm font-semibold uppercase tracking-[0.3em] text-amber-200/80">Memory Film</p>
             <h2 className="text-3xl font-bold md:text-4xl">Thước phim kỷ niệm</h2>
-            <p className="mt-3 max-w-2xl text-white/60">
-              Tự động trình chiếu những khoảnh khắc đẹp như một đoạn phim ngắn của hai bạn.
-            </p>
           </div>
 
           <motion.button
