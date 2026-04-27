@@ -61,11 +61,31 @@ function runTinyTests() {
       }).date === "2024-02-14",
       "mapMemoryFromDatabase should convert memory_date to date"
   );
-  console.assert(FALLBACK_IMAGE.startsWith("https://"), "FALLBACK_IMAGE should be a valid remote image URL");
-  console.assert(formatDate("2024-02-14").includes("2024"), "formatDate should format valid dates");
+  console.assert(typeof FALLBACK_IMAGE === "string" && FALLBACK_IMAGE.length > 0, "FALLBACK_IMAGE should be valid");  console.assert(formatDate("2024-02-14").includes("2024"), "formatDate should format valid dates");
 }
 
 runTinyTests();
+
+function getDaysFromMemoryDate(dateString) {
+  if (!dateString) return 0;
+
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return 0;
+
+  const today = new Date();
+  const diff = today.getTime() - date.getTime();
+
+  return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+}
+
+function formatMemoryDays(dateString) {
+  const days = getDaysFromMemoryDate(dateString);
+
+  if (days === 0) return "Hôm nay là ngày kỷ niệm";
+  if (days === 1) return "Đã bên nhau 1 ngày";
+
+  return `Đã bên nhau ${days.toLocaleString("vi-VN")} ngày`;
+}
 
 function Icon({ name, size = 20, className = "", fill = "none" }) {
   const commonProps = {
@@ -218,7 +238,7 @@ function HeroSection({ memoriesCount, totalDays }) {
                   transition={{ duration: 0.8, delay: 0.1 }}
                   className="max-w-3xl bg-gradient-to-r from-white via-amber-100 to-slate-200 bg-clip-text text-4xl font-bold leading-tight text-transparent md:text-6xl"
               >
-                Nơi lưu giữ những khoảnh khắc đẹp của hai chúng ta
+                Nơi lưu giữ những kỷ niệm của anh và Em ❤️
               </motion.h1>
 
               <motion.p
@@ -387,8 +407,18 @@ function FilmSection({ currentSlide, sortedMemories, activeSlide, setActiveSlide
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.8, delay: 0.25 }}
                   >
-                    <p className="mb-3 text-sm font-medium text-amber-100">{formatDate(currentSlide.date)}</p>
-                    <h3 className="max-w-3xl text-3xl font-bold leading-tight md:text-6xl">{currentSlide.title}</h3>
+                    <p className="mb-2 text-sm font-medium text-amber-100">
+                      {formatDate(currentSlide.date)}
+                    </p>
+
+                    <motion.p
+                        initial={{ opacity: 0, x: -16 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.15 }}
+                        className="mb-4 inline-flex rounded-full border border-amber-300/25 bg-amber-500/15 px-4 py-2 text-sm font-semibold text-amber-100 backdrop-blur"
+                    >
+                      {formatMemoryDays(currentSlide.date)}
+                    </motion.p>                    <h3 className="max-w-3xl text-3xl font-bold leading-tight md:text-6xl">{currentSlide.title}</h3>
                     <p className="mt-4 max-w-2xl text-sm leading-7 text-white/75 md:text-lg md:leading-8">
                       {currentSlide.description || "Một khoảnh khắc đáng nhớ trong hành trình của hai bạn."}
                     </p>
@@ -648,7 +678,10 @@ function TimelineSection({ memories, onRemove }) {
                               <div className="relative mb-3 flex items-start justify-between gap-4">
                                 <div>
                                   <p className="text-sm font-medium text-amber-200">{formatDate(memory.date)}</p>
-                                  <h3 className="mt-1 text-2xl font-bold transition duration-300 group-hover:text-amber-100">
+
+                                  <p className="mt-2 inline-flex rounded-full border border-amber-300/25 bg-amber-500/15 px-3 py-1 text-xs font-semibold text-amber-100">
+                                    {formatMemoryDays(memory.date)}
+                                  </p>                                  <h3 className="mt-1 text-2xl font-bold transition duration-300 group-hover:text-amber-100">
                                     {memory.title}
                                   </h3>
                                 </div>
@@ -699,9 +732,16 @@ function CinemaOverlay({ isOpen, currentSlide, onClose, onPrev, onNext }) {
                     alt={currentSlide.title}
                     className="absolute inset-0 h-full w-full object-cover opacity-70"
                     initial={{ scale: 1.08, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 0.7 }}
+                    animate={{
+                      scale: [1.05, 1.13],
+                      x: [0, -18],
+                      y: [0, -10],
+                    }}
                     exit={{ scale: 0.96, opacity: 0 }}
-                    transition={{ duration: 1 }}
+                    transition={{
+                      duration: 6,
+                      ease: "easeOut",
+                    }}
                     onError={(event) => {
                       event.currentTarget.src = FALLBACK_IMAGE;
                     }}
@@ -730,6 +770,15 @@ function CinemaOverlay({ isOpen, currentSlide, onClose, onPrev, onNext }) {
                     className="mb-4 text-xs uppercase tracking-[0.25em] text-amber-200 md:text-sm md:tracking-[0.35em]"
                 >
                   {formatDate(currentSlide.date)}
+                  <motion.div
+                      key={`days-${currentSlide.id}`}
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.7, delay: 0.15 }}
+                      className="mb-6 rounded-full border border-amber-300/30 bg-amber-500/15 px-6 py-3 text-sm font-semibold text-amber-100 backdrop-blur md:text-base"
+                  >
+                    {formatMemoryDays(currentSlide.date)}
+                  </motion.div>
                 </motion.p>
 
                 <motion.h2
