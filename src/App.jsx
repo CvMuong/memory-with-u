@@ -229,7 +229,7 @@ function HeroSection({ memoriesCount, totalDays }) {
                 >
                   <Icon name="sparkles" size={16} />
                 </motion.span>
-                Love Memory Website
+                Anh thương em ❤️
               </motion.div>
 
               <motion.h1
@@ -318,7 +318,7 @@ function HeroSection({ memoriesCount, totalDays }) {
                   </motion.div>
 
                   <div>
-                    <p className="font-semibold">Album kỷ niệm</p>
+                    <p className="font-semibold">Anh thương Em ❤️</p>
                     <p className="text-sm text-white/70">Mỗi khoảnh khắc đều có một câu chuyện riêng</p>
                   </div>
                 </div>
