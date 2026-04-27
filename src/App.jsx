@@ -71,10 +71,11 @@ function getDaysFromMemoryDate(dateString) {
   if (!dateString) return 0;
 
   const date = new Date(dateString);
+  const firsrMeetDate = new Date(FIRST_MEET_DATE);
   if (Number.isNaN(date.getTime())) return 0;
 
   const today = new Date();
-  const diff = today.getTime() - date.getTime();
+  const diff = date.getTime() - firsrMeetDate.getTime();
 
   return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
 }
@@ -91,13 +92,13 @@ function getDaysSinceFirstMeet() {
   return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
 }
 
-function formatMemoryDays() {
-  const days = getDaysSinceFirstMeet();
+function formatMemoryDays(dateString) {
+  const days = getDaysFromMemoryDate(dateString);
 
   if (days === 0) return "Hôm nay là ngày kỷ niệm";
   if (days === 1) return "Đã bên nhau 1 ngày";
 
-  return `Đã ${days.toLocaleString("vi-VN")} ngày kể từ lúc anh gặp Em`;
+  return `${days.toLocaleString("vi-VN")} ngày kể từ lúc anh gặp Em`;
 }
 
 function Icon({ name, size = 20, className = "", fill = "none" }) {
